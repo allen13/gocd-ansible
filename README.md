@@ -1,23 +1,13 @@
-[![Snap-CI](https://snap-ci.com/Tpbrown/ansible-gocd/branch/master/build_image)](https://snap-ci.com/Tpbrown/ansible-gocd/)
-ATTENTION: 
-=
-This repository was recently transferred from ThoughtWorksInc to Tpbrown.  If you've forked it you'll need to update your remotes (or delete & re-fork). 
-
-Apologies for the change -- it was adding confusion around support. (It's not supported ;-)
 
 ansible-gocd
 =============
 
-Ansible Playbook to install Go.  
+Ansible Playbook to install Go CD on a centos box.  
 
 Model even the most complex build & deploy workflow with ease. Unlike CI servers, Go was built from the ground up with pipelines in mind. Go makes it simple to model failing fast, artifact promotion, self-service environments and single-click deployment.
 
 Product details are available at http://www.go.cd .  Source available at https://github.com/GoCD/GoCD
 
-requirements
-============
-* Ansible 1.6+ is required for UFW firewall module support.  
-* Ansible 1.5 can be used if you comment out the UFW tasks.
 
 installation instructions
 =========================
