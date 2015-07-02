@@ -1,0 +1,13 @@
+[development]
+go-server-01 ansible_ssh_host=192.168.1.101 private_ip=192.168.2.101
+go-agent-02 ansible_ssh_host=192.168.1.102 private_ip=192.168.2.102
+
+[development:vars]
+ansible_ssh_user=vagrant
+ansible_ssh_pass=vagrant
+
+[go-server]
+go-server-01
+
+[go-agent]
+go-agent-02

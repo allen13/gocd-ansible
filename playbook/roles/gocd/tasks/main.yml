@@ -1,0 +1,10 @@
+- include: go-common.yml
+
+- include: go-server.yml
+  when: "'go-server' in group_names"
+
+- include: go-agent.yml
+  when: "'go-agent' in group_names"
+
+- include: server-config.yml
+  when: GOCD_CONFIGURE and "'go-server' in group_names"

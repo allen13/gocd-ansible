@@ -1,0 +1,11 @@
+- hosts: go-server
+  sudo: true
+  gather_facts: true
+  roles:
+    - gocd
+
+- hosts: go-agent
+  sudo: true
+  gather_facts: true
+  roles:
+    - gocd

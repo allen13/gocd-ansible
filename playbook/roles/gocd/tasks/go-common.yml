@@ -1,0 +1,53 @@
+- name: thoughtworks go yum repository
+  copy:
+    src: thoughtworks-go-download.repo
+    dest: /etc/yum.repos.d/
+    mode: 0644
+
+- name: yum install Java 1.8 and some basic dependencies
+  yum: name={{ item }} state=present
+  with_items:
+   - unzip
+   - which
+   - java-1.8.0-openjdk-devel
+   - git
+
+- name: determine JAVA_HOME
+  shell: readlink -f /usr/bin/java | sed "s:bin/java::"
+  register: system_java_home
+  changed_when: false
+
+- name: set GOCD_JAVA_HOME
+  set_fact:
+     GOCD_JAVA_HOME: "{{ system_java_home.stdout }}"
+
+- name: add go group
+  group: gid={{ GOCD_GROUPID }} name={{ GOCD_GROUP }} state=present
+
+- name: add go user with home at /var/go
+  user: name={{ GOCD_USER }} comment="Go CD User" uid={{ GOCD_USERID }} group={{ GOCD_GROUP }} home=/var/go
+
+- name: create log directory
+  file: path=/var/log/go-server state=directory owner={{ GOCD_USER }} group={{ GOCD_GROUP }}
+
+- name: create run directory
+  file: path=/var/run/go-server state=directory
+
+- name: create var/lib/go-server directory
+  file: path=/var/lib/go-server state=directory owner={{ GOCD_USER }} group={{ GOCD_GROUP }}
+
+- name: create etc/go directory
+  file: path=/etc/go state=directory owner={{ GOCD_USER }} group={{ GOCD_GROUP }}
+
+- name: determine latest version of Go available in yum repo
+  shell: yum list go-server |grep go-server |awk '{print $2}'
+  register: tmp_go_version
+  changed_when: false
+  when: GOCD_GO_VERSION == 'latest' and ansible_pkg_mgr=='yum'
+  tags:
+    - skip_ansible_lint
+
+- name: Set GOCD_GO_VERSION to latest
+  set_fact:
+     GOCD_GO_VERSION: "{{ tmp_go_version.stdout }}"
+  when: GOCD_GO_VERSION == 'latest'
